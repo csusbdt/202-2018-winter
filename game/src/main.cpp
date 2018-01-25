@@ -2,6 +2,10 @@
 #include "SDL.h"
 #include "global.h"
 
+SDL_Rect rect;
+double speed = 100.0;  // pixels per second
+
+void initGameObjects();
 void updateGameObjects(double t, double dt);
 void drawGameObjects();
 
@@ -20,6 +24,8 @@ int main(int argc, char * argv[]) {
 	int flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 	renderer = SDL_CreateRenderer(window, -1, flags);
 	if (renderer == nullptr) fatal(SDL_GetError());
+
+	initGameObjects();
 
 	Uint32 previous_millis = SDL_GetTicks();
 	while (true) {
@@ -52,15 +58,18 @@ int main(int argc, char * argv[]) {
 	return 0;
 }
 
-void updateGameObjects(double t, double dt) {
-}
-
-void drawGameObjects() {
-	SDL_Rect rect;
+void initGameObjects() {
 	rect.w = 100;
 	rect.h = 50;
 	rect.x = 100;
 	rect.y = 100;
+}
+
+void updateGameObjects(double t, double dt) {
+	rect.x += speed * dt;
+}
+
+void drawGameObjects() {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // r, g, b, alpha
 	SDL_RenderFillRect(renderer, &rect);
 }

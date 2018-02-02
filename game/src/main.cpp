@@ -1,13 +1,15 @@
 #include <iostream>
 #include "SDL.h"
 #include "global.h"
+#include "Rectangle.h"
 
-SDL_Rect rect;
-double speed = 100.0;  // pixels per second
+// Game objects:
+Rectangle rectangle1(100, 50, 100, 150);
+Rectangle rectangle2(25, 200, 75, 50);
 
 void initGameObjects();
 void updateGameObjects(double t, double dt);
-void drawGameObjects();
+void drawGameObjects(SDL_Renderer * renderer);
 
 int main(int argc, char * argv[]) {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) fatal(SDL_GetError());
@@ -22,7 +24,7 @@ int main(int argc, char * argv[]) {
 	if (window == nullptr) fatal(SDL_GetError());
 
 	int flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-	renderer = SDL_CreateRenderer(window, -1, flags);
+	SDL_Renderer * renderer = SDL_CreateRenderer(window, -1, flags);
 	if (renderer == nullptr) fatal(SDL_GetError());
 
 	initGameObjects();
@@ -48,7 +50,7 @@ int main(int argc, char * argv[]) {
 			updateGameObjects(t, dt);
 
 			// Draw game objects to the canvas.
-			drawGameObjects();
+			drawGameObjects(renderer);
 
 			// Render canvas.
 			SDL_RenderPresent(renderer);
@@ -59,18 +61,15 @@ int main(int argc, char * argv[]) {
 }
 
 void initGameObjects() {
-	rect.w = 100;
-	rect.h = 50;
-	rect.x = 100;
-	rect.y = 100;
 }
 
 void updateGameObjects(double t, double dt) {
-	rect.x += speed * dt;
+	rectangle1.update(t, dt);
+	rectangle2.update(t, dt);
 }
 
-void drawGameObjects() {
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF); // r, g, b, alpha
-	SDL_RenderFillRect(renderer, &rect);
+void drawGameObjects(SDL_Renderer * renderer) {
+	rectangle1.draw(renderer);
+	rectangle2.draw(renderer);
 }
 

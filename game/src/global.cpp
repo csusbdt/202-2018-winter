@@ -3,8 +3,6 @@
 #include <string.h>
 #include "global.h"
 
-SDL_Renderer * renderer = nullptr;
-
 void fatal(const char * fmt, ...) {
 	va_list v;
 	char buf[1024];

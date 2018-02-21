@@ -15,6 +15,5 @@ private:
 	double h;
 	double xSpeed;
 	double ySpeed;
-
 };
 
